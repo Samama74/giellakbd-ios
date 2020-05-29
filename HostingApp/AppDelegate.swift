@@ -96,9 +96,15 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         currentViewController?.present(alert, animated: true, completion: nil)
 
         pahkat.installSpellersForNewlyEnabledKeyboards(completion: { error in
-            alert.dismiss(animated: true, completion: {
+            DispatchQueue.main.async {
+                alert.dismiss(animated: true, completion: nil)
                 self.isInstalling = false
-            })
+
+                if let error = error {
+                    let alert = UIAlertController(title: "Error", message: "\(error)", preferredStyle: .alert)
+                    currentViewController?.present(alert, animated: true, completion: nil)
+                }
+            }
         })
     }
 
